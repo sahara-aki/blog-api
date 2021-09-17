@@ -41,15 +41,18 @@ module.exports = class extends think.Model {
     // 转换成下划线
     const resObj = {};
     for (const k in obj) {
+      if (Array.isArray(obj[k])) {
+        obj[k] = this.formatData(obj[k]);
+      }
       let newKey = dataMap[k] && dataMap[k].field ? dataMap[k].field : k;
-      newKey = newKey.replace(/\_(\w)/g, function(all, letter) {
+      // eslint-disable-next-line
+        newKey = newKey.replace(/\_(\w)/g, function (all, letter) {
         return letter.toUpperCase();
       });
       resObj[newKey] = obj[k];
     }
     return resObj;
   }
-  
   /**
    * update data
    * @param  {Object} where   查询条件  要有id
